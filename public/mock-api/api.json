@@ -1,0 +1,31 @@
+[
+  {
+    "id": 1,
+    "name": "Dunder Mifflin",
+    "highlights": [
+      {
+        "category": "MAKES_LOTTA_MONEY",
+        "date_added": "2021-10-21",
+        "text": "Additional description"
+      },
+      {
+        "category": "IS_HARMONIC"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Cash Grab",
+    "description": "We're legit, we promise ;)",
+    "highlights": [
+      {
+        "category": "MAKES_LOTTA_MONEY",
+        "text": "Additional description"
+      },
+      {
+        "category": "IS_HARMONIC",
+        "text": "Additional description"
+      }
+    ]
+  }
+]
