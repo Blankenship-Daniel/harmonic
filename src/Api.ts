@@ -25,4 +25,6 @@ export class Api {
     const operation = operationHandlers[operator];
     return operation(predicate, query);
   }
+
+  static buildQuery() {}
 }

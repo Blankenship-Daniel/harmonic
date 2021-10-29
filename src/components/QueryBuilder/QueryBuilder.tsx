@@ -1,81 +1,56 @@
-import React, { FormEvent, useEffect, useState } from "react";
-import { Api } from "../../Api";
-import { Operators, Predicates, Query } from "../../Schema";
+import React, { createContext, useState } from "react";
+import QueryEntry from "../QueryEntry/QueryEntry";
+import { v4 as uuidv4 } from "uuid";
 
-const PREDICATE_INITIAL_STATE = Object.keys(Predicates.VALUES)[0];
-const OPERATOR_INITIAL_STATE = Operators.VALUES[0];
-const QUERY_INITIAL_STATE = "";
-const QUERY_RESPONSE_INITIAL_STATE = [{}];
-const DATA_STORE_INITIAL_STATE = [{}];
+export const QueryContext = createContext({});
 
 const QueryBuilder = () => {
-  const [predicate, setPredicate] = useState(PREDICATE_INITIAL_STATE);
-  const [operator, setOperator] = useState(OPERATOR_INITIAL_STATE);
-  const [query, setQuery] = useState(QUERY_INITIAL_STATE);
-  const [queryResponse, setQueryResponse] = useState(
-    QUERY_RESPONSE_INITIAL_STATE
-  );
-  const [dataStore, setDataStore] = useState(DATA_STORE_INITIAL_STATE);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch("mock-api/api.json");
-      const store = await response.json();
-      setDataStore(store);
+  const handleQueryUpdate = (context: any, queryId: string, fields: any) => {
+    const query = {
+      [queryId]: `predicate=${fields.predicate}&operator=${fields.operator}&query=${fields.query}`,
     };
-
-    fetchData();
-  }, []);
-
-  const handleFormSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-    const response = await Api.runQuery(
-      Predicates.VALUES[predicate],
-      operator,
-      query
-    );
-    setQueryResponse(response);
+    setQueryMap({
+      ...context,
+      ...query,
+    });
   };
 
-  const onPredicateChange = (newPredicate: string) => {
-    setPredicate(newPredicate);
-  };
-
-  const onOperatorChange = (newOperator: string) => {
-    setOperator(newOperator);
-  };
-
-  const onSearch = (newQuery: string) => {
-    setQuery(newQuery);
-  };
+  const [queryMap, setQueryMap] = useState({});
+  const [queryEntries, setQueryEntries] = useState([
+    <QueryEntry queryId={uuidv4()} onQueryUpdate={handleQueryUpdate} />,
+  ]);
 
   return (
-    <div className="QueryBuilder">
-      <section className="SearchBar">
-        <form
-          className="QueryForm"
-          onSubmit={(event: FormEvent<HTMLFormElement>) => {
-            handleFormSubmit(event);
-          }}
-        >
-          <span>where</span>
-          {Predicates.toHtml(onPredicateChange)}
-          {Operators.toHtml(onOperatorChange)}
-          {Query.toHtml(onSearch)}
-          <input type="submit" value="Search" />
-        </form>
-      </section>
-      <div className="Response">
-        <section className="DataStore">
-          <h3>API</h3>
-          <pre>{JSON.stringify(dataStore, null, 4)}</pre>
+    <QueryContext.Provider value={queryMap}>
+      <div className="QueryBuilder">
+        <section className="SearchBar">
+          <section className="Queries">
+            {queryEntries.map((query, i) => (
+              <div key={`query-${i}`} className="Query">
+                <span>{i === 0 ? "WHERE" : "AND"}</span> {query}
+              </div>
+            ))}
+          </section>
+          <button
+            onClick={() => {
+              setQueryEntries([
+                ...queryEntries,
+                <QueryEntry
+                  queryId={uuidv4()}
+                  onQueryUpdate={handleQueryUpdate}
+                />,
+              ]);
+            }}
+          >
+            Add New Filter
+          </button>
         </section>
-        <section className="QueryResponse">
-          <h3>Query Response</h3>
-          <pre>{JSON.stringify(queryResponse, null, 4)}</pre>
-        </section>
+        <button>Search</button>
+        <div className="Response">
+          <pre>{JSON.stringify(queryMap, null, 2)}</pre>
+        </div>
       </div>
-    </div>
+    </QueryContext.Provider>
   );
 };
 
