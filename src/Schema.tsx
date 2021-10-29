@@ -33,17 +33,17 @@ export class Operators {
       Contains: (predicate: string, query: string) => {
         const sanitizedQuery = query === "" ? undefined : query;
         return store.filter((entry) =>
-          entry[predicate].toString().includes(sanitizedQuery)
+          entry[predicate]?.toString().includes(sanitizedQuery)
         );
       },
       "Does not contain": (predicate: string, query: string) => {
         const sanitizedQuery = query === "" ? undefined : query;
         return store.filter(
-          (entry) => !entry[predicate].toString().includes(sanitizedQuery)
+          (entry) => !entry[predicate]?.toString().includes(sanitizedQuery)
         );
       },
       "Is exactly": (predicate: string, query: string) =>
-        store.filter((entry) => entry[predicate].toString() === query),
+        store.filter((entry) => entry[predicate]?.toString() === query),
       "Is empty": (predicate: string, query: string) =>
         store.filter((entry) => !!entry[predicate] === false),
       "Is not empty": (predicate: string, query: string) =>
