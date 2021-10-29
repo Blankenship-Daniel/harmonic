@@ -3,21 +3,44 @@
   height: 100%;
 }
 
-.SearchBar {
+.TopNav,
+.QueryString {
+  border-bottom: 1px solid #bdbdbd;
+}
+
+.QueryResponseEntry {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.TopNav,
+.QueryString {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+.AddFilterBtn {
+  margin-top: 15px;
+  border: none;
+  background: none;
+  color: #2196f3;
+  cursor: pointer;
+}
+
 .SearchBar {
-  background-color: #eee;
+  width: 600px;
   padding: 20px;
+}
+
+.Query,
+.QueryResponseEntryContent {
+  display: flex;
+  justify-content: space-between;
 }
 
 .Query {
   width: 600px;
-  display: flex;
-  justify-content: space-between;
+
   padding: 5px;
 }
 
@@ -27,7 +50,37 @@
   justify-content: space-between;
 }
 
-.Response {
+.QueryStringResponse {
+  font-size: 12px;
   display: flex;
   width: 600px;
+}
+
+.QueryResponseEntry {
+  font-size: 12px;
+  padding: 10px;
+  min-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.QueryResponseEntryContent {
+  width: 600px;
+}
+
+.CompanyName {
+  display: flex;
+  align-items: center;
+}
+
+.CompanyHighlights {
+  display: flex;
+}
+
+.Highlight {
+  background-color: #f8bbd0;
+  border-radius: 20px;
+  padding: 10px;
+  margin: 5px;
 }
