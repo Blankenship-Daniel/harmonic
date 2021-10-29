@@ -12,15 +12,19 @@
   border-bottom: 1px solid #e0e0e0;
 }
 
-.TopNav,
-.QueryString {
+.TopNav {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+.QueryString {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
 .AddFilterBtn {
-  margin-top: 15px;
   border: none;
   background: none;
   color: #2196f3;
@@ -32,6 +36,13 @@
   padding: 20px;
 }
 
+.Actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .Query,
 .QueryResponseEntryContent {
   display: flex;
@@ -40,7 +51,6 @@
 
 .Query {
   width: 600px;
-
   padding: 5px;
 }
 
@@ -51,9 +61,7 @@
 }
 
 .QueryStringResponse {
-  font-size: 12px;
   display: flex;
-  width: 600px;
 }
 
 .QueryResponseEntry {

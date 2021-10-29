@@ -15,6 +15,7 @@ export const QueryContext = createContext({});
 
 const QueryBuilder = () => {
   const [store, setStore] = useState([]);
+  const [searchString, setSearchString] = useState("");
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -25,13 +26,22 @@ const QueryBuilder = () => {
     fetchCompanies();
   }, []);
 
+  const buildSearchString = () => {
+    const q: any = Object.values(queryMap).reduce(
+      (prev, curr) => (prev === "" ? curr : `${prev}&${curr}`),
+      ""
+    );
+    const encoded = encodeURI(q);
+    setSearchString(encoded);
+  };
+
   const handleQueryUpdate = (
     context: QueryContextType,
     queryId: string,
     fields: FieldsType
   ) => {
     const query = {
-      [queryId]: `predicate=${fields.predicate}&operator=${fields.operator}&query=${fields.query}`,
+      [queryId]: `predicate=${fields.predicate}|operator=${fields.operator}|query=${fields.query}`,
     };
     setQueryMap({
       ...context,
@@ -56,7 +66,7 @@ const QueryBuilder = () => {
                 </div>
               ))}
             </section>
-            <section>
+            <section className="Actions">
               <button
                 className="AddFilterBtn"
                 onClick={() => {
@@ -71,6 +81,7 @@ const QueryBuilder = () => {
               >
                 + Add New Filter
               </button>
+              <button onClick={buildSearchString}>Search</button>
             </section>
           </section>
         </section>
@@ -78,6 +89,9 @@ const QueryBuilder = () => {
         <section className="QueryString">
           <div className="QueryStringResponse">
             <pre>{JSON.stringify(queryMap, null, 2)}</pre>
+          </div>
+          <div className="SearchStringResponse">
+            <pre>{JSON.stringify(searchString, null, 2)}</pre>
           </div>
         </section>
 
